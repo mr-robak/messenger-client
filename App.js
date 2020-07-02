@@ -1,13 +1,22 @@
-import { StatusBar } from "expo-status-bar";
 import React from "react";
+// import { AppRegistry } from "react-native";
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "@apollo/react-hooks";
+import HelloWorld from "./screens/HelloWorld";
+
 import { StyleSheet, Text, View } from "react-native";
+import FetchData from "./screens/FetchData";
+
+// Create the client as outlined in the setup guide
+const client = new ApolloClient({
+  uri: "http://localhost:4000/graphql",
+});
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Hello world!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ApolloProvider client={client}>
+      <FetchData />
+    </ApolloProvider>
   );
 }
 
