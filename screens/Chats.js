@@ -27,25 +27,34 @@ const GET_USER = gql`
       id
       firstName
       lastName
-      email
-      password
-      isLoggedin
-      preferences
+      # email
+      # password
+      # isLoggedin
+      # preferences
       user_contacts {
         id
         firstName
         lastName
       }
+      participants {
+        id
+        title
+        creatorId
+      }
     }
   }
 `;
 
-export default function FetchData() {
+export default function Chats() {
   // console.log(dataFetch);
   const { loading, error, data } = useQuery(GET_USER, {
     variables: { id: 1 },
   });
-  console.log(data);
+  // const { loading, error, data } = useQuery(GET_CHAT, {
+  //   variables: { id: 2 },
+  // });
+  // console.log(data.user.chat_users);
+  console.log("=====>   ", data);
 
   if (loading)
     return (
@@ -61,9 +70,34 @@ export default function FetchData() {
       </View>
     );
 
+  // const userData =()=>{
+  //   return (<Text style={s.text1}>Hello {data.user.firstName}!</Text>
+  //   <Text style={s.text2}>Here are your contacts:</Text>
+  //   {data.user.user_contacts.map((user) => {
+  //     return (
+  //       <Text key={user.id} style={s.text3}>
+  //         {user.firstName}
+  //       </Text>
+  //     );
+  //   })}
+  //   )
+  // }
+
   return (
     <View style={s.container}>
-      <Text style={s.text1}>Hello {data.user.firstName}!</Text>
+      {/* {userData()} */}
+      <Text style={s.text1}>Chat</Text>
+
+      {data.user.participants.map((chat) => {
+        return (
+          <Text key={chat.id} style={s.text2}>
+            {chat.id}
+            {chat.title === null ? `creatorId:${chat.creatorId}` : chat.title}
+          </Text>
+        );
+      })}
+
+      {/* <Text style={s.text1}>Hello {data.user.firstName}!</Text>
       <Text style={s.text2}>Here are your contacts:</Text>
       {data.user.user_contacts.map((user) => {
         return (
@@ -71,7 +105,7 @@ export default function FetchData() {
             {user.firstName}
           </Text>
         );
-      })}
+      })} */}
     </View>
   );
 }
